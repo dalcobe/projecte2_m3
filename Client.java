@@ -12,7 +12,7 @@ import javax.sound.sampled.SourceDataLine;
 
 public class Client {
     private String nom;
-    private String cognoms;
+    private String cognom;
     private Dni DNI;
     private Telefon telefon;
     private Email correu;
@@ -21,22 +21,26 @@ public class Client {
     private Iban compteBancari;
     private int edat;
 
-    public Client(){
+    public Client() {
         this.DNI = new Dni();
-        this.telefon=new Telefon();
-        this.correu= new Email();
-        this.compteBancari=new Iban();
-        this.data_naix=LocalDate.now();
+        this.telefon = new Telefon();
+        this.correu = new Email();
+        this.compteBancari = new Iban();
+        this.data_naix = LocalDate.now();
     }
 
-    private void calcularEdad (){
+    private void calcularEdad() {
         LocalDate ara = LocalDate.now();
         this.edat = Period.between(this.data_naix, ara).getYears();
     }
 
-    // public Client (String dni){
-    //     this.DNI = new Dni(dni);
-    // }
+    public Client (String dni){
+    this.DNI = new Dni(dni);
+    this.telefon = new Telefon();
+    this.correu = new Email();
+    this.compteBancari = new Iban();
+    this.data_naix = LocalDate.now();
+    }
 
     public void consultaClient() throws SQLException {
         Scanner teclat = new Scanner(System.in);
@@ -66,16 +70,7 @@ public class Client {
 
         if (rs.next()) {
             // mapeig de client BD a client OO
-            cargarDadesDeSentenciaEnClient();
-            // this.nom = rs.getString("nom");
-            // this.DNI = rs.getString("DNI");
-            // this.cognoms = rs.getString("cognoms");
-            // this.telefon = rs.getString("telefon");
-            // this.data_naix = rs.getDate("data_naix").toLocalDate();
-            // this.correu = rs.getString("correu");
-            // this.condicioFisica = rs.getString("condicio fisica");
-
-            return this;
+            cargarDadesDeSentenciaEnClient(rs);
         }
 
         return null;
@@ -104,14 +99,14 @@ public class Client {
             System.out.println("Introdueix el nom: ");
             this.nom = teclat.next();
             System.out.println("Introdueix els cognoms: ");
-            this.cognoms = teclat.next();
+            this.cognom = teclat.next();
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             boolean dataCorrecta;
 
             do {
                 dataCorrecta = true;
-                System.out.println("Introdueix data naixement de forma correcta (DD.MM.AAA) ");
+                System.out.println("Introdueix data naixement de forma correcta (DD.MM.AAA)");
                 try {
                     this.data_naix = LocalDate.parse(teclat.next(), formatter);
                 } catch (Exception ex) {
@@ -128,15 +123,15 @@ public class Client {
             Email correu = new Email();
             do {
                 System.out.println("Introdueix el correu electronic: ");
-            } while (!correu.setcorreu(teclat.next()));
-            setcorreu(correu);
+            } while (!correu.setEmail(teclat.next()));
+            setEmail(correu);
 
             CompteBancari compteBancari = new CompteBancari();
             do {
-                System.out.println("Introdueix el compte bancari (IBAN complert)");
-            } while (!compteBancari.setcompteBancari(teclat.next()));
+                System.out.println("Introdueix el compte bancari (IBAN complert) ");
+            } while (!compteBancari.setIBAN(teclat.next()));
 
-            setcompteBancari(compteBancari);
+            setIBAN(compteBancari);
 
             altaClientBD();
 
@@ -146,57 +141,68 @@ public class Client {
 
     }
 
+    private void setTelefon(Telefon telefon2) {
+    }
+
+    private void setIBAN(CompteBancari compteBancari2) {
+    }
+
+    private void setEmail(Email correu2) {
+    }
+
     private void altaClientBD() throws SQLException {
         Connection conn = ConnexioBD.getConnection();
 
         String query = "INSERT INTO socis VALUES (?,?,?,?,?,?,?,?)";
 
         try (
-            PreparedStatement ps = conn.prepareStatement(query);){
-                cargarDadesDeClientEnSentencia(ps);
-                ps.executeUpdate();
-            } catch (Exception ex){
-                throw new RuntimeException("No s'ha pogut agregar un client\n" + this.DNI.getDni());
-            }
-        
+                PreparedStatement ps = conn.prepareStatement(query);) {
+            cargarDadesDeClientEnSentencia(ps);
+            ps.executeUpdate();
+        } catch (Exception ex) {
+            throw new RuntimeException("No s'ha pogut agregar un client\n" + this.DNI.getDni());
+        }
+
     }
 
-    private void cargarDadesDeClientEnSentencia(PreparedStatement ps) throws SQLException{
+    private void cargarDadesDeClientEnSentencia(PreparedStatement ps) throws SQLException {
         ps.setString(1, this.DNI.getDni());
         ps.setString(2, this.nom);
-        ps.setString(3, this.cognoms);
+        ps.setString(3, this.cognom);
         ps.setString(4, this.compteBancari.getCompte());
         ps.setString(5, this.telefon.getTelefon());
         ps.setString(6, this.correu.getEmail());
         ps.setString(7, data_naix.toString());
     }
 
-    private void cargarDadesDeSentenciaEnClient() throws SQLException {
+    private void cargarDadesDeSentenciaEnClient(ResultSet rs) throws SQLException {
         this.setDni(new Dni(rs.getString("dni")));
         this.setNom(rs.getString("nom"));
-        this.setCognoms(rs.getString("cognoms"));
-        this.correu=new CorreuElectronic (rs.getString("email");
-        this.setCCC(new CompteBancari (rs.getString("CCC")));
-        this.telefon=new Telefon(rs.getString("telefon"));
+        this.setCognom(rs.getString("cognom"));
+        this.correu = new Email(rs.getString("email"));
+        this.setCCC(new CompteBancari(rs.getString("CCC")));
+        this.telefon = new Telefon(rs.getString("telefon"));
 
         this.setData_naix(rs.getDate("dataNaixement").toLocalDate());
         calcularEdad();
     }
 
-    // static void baixaClient() {
-    //     System.out.println("*BAIXA D'UN CLIENT*");
+    private void setData_naix(LocalDate localDate) {
+    }
 
-    // }
+    private void setCCC(CompteBancari compteBancari2) {
+    }
 
-    // static void modificarClient() {
-    //     System.out.println("*MODIFICACIÓ D'UN CLIENT*");
+    private void setCognom(String string) {
+    }
 
-    // }
+    private void setNom(String string) {
+    }
 
-    
+    private void setDni(Dni dni2) {
+    }
 
-
-    public ArrayList<Client> getClientOrdenatsCognoms() throws SQLException{
+    public ArrayList<Client> getClientOrdenatsCognoms() throws SQLException {
         ArrayList<Client> clients = new ArrayList<>();
         Connection conn = ConnexioBD.getConnection();
 
@@ -205,7 +211,7 @@ public class Client {
 
         ResultSet rs = sentencia.executeQuery();
 
-        while (rs.next()){
+        while (rs.next()) {
             Client c1 = new Client();
             c1.cargarDadesDeSentenciaEnClient(rs);
 
@@ -214,7 +220,7 @@ public class Client {
         return clients;
     }
 
-    public ArrayList<Client> getClientOrdenatsReserves(ResultSet rs) throws SQLException {
+    public ArrayList<Client> getClientOrdenatsReserves() throws SQLException {
         ArrayList<Client> clients = new ArrayList<>();
 
         Connection conn = ConnexioBD.getConnection();
@@ -223,7 +229,7 @@ public class Client {
         PreparedStatement sentencia = conn.prepareStatement(consulta);
 
         ResultSet rs = sentencia.executeQuery();
-        
+
         while (rs.next()) {
             Client c1 = new Client();
             c1.cargarDadesDeSentenciaEnClient(rs);

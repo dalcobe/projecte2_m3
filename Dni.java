@@ -26,6 +26,9 @@ public class Dni {
         return false;
     }
 
+    public void setDni(){
+    }    
+
     public boolean validarDNI(String dni) {
         String lletraMajuscula = "";
         if (dni.length() != 9 || Character.isLetter(this.dni.charAt(8)) == false) {

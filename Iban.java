@@ -6,6 +6,9 @@ public class Iban {
     public Iban(String iban) {
     }
 
+    public Iban() {
+    }
+
     public static boolean validarIBAN(String iban) {
         boolean esValid = false;
         int i = 2;
@@ -55,5 +58,5 @@ public class Iban {
     public void setCompte(String iban) {
         this.iban = iban;
     }
-    
+
 }

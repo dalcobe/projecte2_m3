@@ -10,17 +10,16 @@ public class Gimnas {
     private String nom;
     private String CIF;
     ArrayList<Client> clients;
-    ArrayList<Activitats> activitats;
-    ArrayList<Reserves> reserves;
+    // ArrayList<Activitats> activitats;
+    // ArrayList<Reserves> reserves;
     private String telefon;
 
-    public Gimnas(){
-        this.clients = new ArrayList<>();
-        this.activitats = new ArrayList<>();
-        this.reserves = new ArrayList<>();
+    // public Gimnas(){
+    // this.clients = new ArrayList<>();
+    // this.activitats = new ArrayList<>();
+    // this.reserves = new ArrayList<>();
 
-
-    }
+    // }
 
     public void gestionarGimnas() throws SQLException, IOException {
         boolean sortir = false;
@@ -84,10 +83,10 @@ public class Gimnas {
                     altaClient();
                     break;
                 case 3:
-                    baixaClient();
+                    // baixaClient();
                     break;
                 case 4:
-                    modificarClient();
+                    // modificarClient();
                     break;
                 case 5:
                     enrere = true;
@@ -105,10 +104,9 @@ public class Gimnas {
 
     private static void consultaClient() throws SQLException {
 
-        // demanar el DNI
-        Client c = new Client();
+        Client c1 = new Client();
 
-        c.consultaClient();
+        c1.consultaClient();
 
     }
 
@@ -118,17 +116,17 @@ public class Gimnas {
 
     }
 
-    private static void baixaClient() {
-        Client c = new Client();
-        c.baixaClient();
+    // private static void baixaClient() {
+    // Client c = new Client();
+    // c.baixaClient();
 
-    }
+    // }
 
-    private static void modificarClient() {
-        Client c = new Client();
-        c.modificarClient();
+    // private static void modificarClient() {
+    // Client c = new Client();
+    // c.modificarClient();
 
-    }
+    // }
 
     private void visualitzarClient() throws SQLException {
         Scanner teclat = new Scanner(System.in);
@@ -157,8 +155,8 @@ public class Gimnas {
                     break;
 
                 case 2:
-                    this.clients = client.getClientOrdenatsEdat();
-                    visualitzarClients();
+                    // this.clients = client.getClientOrdenatsEdat();
+                    // visualitzarClients();
                     break;
                 case 3:
                     this.clients = client.getClientOrdenatsReserves();

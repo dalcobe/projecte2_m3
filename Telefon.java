@@ -11,6 +11,7 @@ public class Telefon {
     Telefon() {
 
     }
+    
 
     private boolean validarTelefon(String telefon) {
         // Validem que el numero tingui 9 digits exactes
@@ -37,5 +38,8 @@ public class Telefon {
 
     public void setTelefon(String telefon) {
         this.telefon = telefon;
+    }
+
+    public void setTelefon() {
     }
 }
