@@ -104,6 +104,7 @@ public class Gimnas {
 
     private static void consultaClient() throws SQLException {
 
+        // demanar el DNI
         Client c1 = new Client();
 
         c1.consultaClient();
@@ -155,8 +156,8 @@ public class Gimnas {
                     break;
 
                 case 2:
-                    // this.clients = client.getClientOrdenatsEdat();
-                    // visualitzarClients();
+                    this.clients = client.getClientOrdenatsEdat();
+                    visualitzarClients();
                     break;
                 case 3:
                     this.clients = client.getClientOrdenatsReserves();

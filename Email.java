@@ -29,8 +29,4 @@ public class Email {
 		return false;
 	}
 
-	public void setEmail() {
-		
-	}
-
 }

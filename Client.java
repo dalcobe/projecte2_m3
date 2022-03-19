@@ -34,13 +34,9 @@ public class Client {
         this.edat = Period.between(this.data_naix, ara).getYears();
     }
 
-    public Client (String dni){
-    this.DNI = new Dni(dni);
-    this.telefon = new Telefon();
-    this.correu = new Email();
-    this.compteBancari = new Iban();
-    this.data_naix = LocalDate.now();
-    }
+    // public Client (String dni){
+    // this.DNI = new Dni(dni);
+    // }
 
     public void consultaClient() throws SQLException {
         Scanner teclat = new Scanner(System.in);
@@ -71,6 +67,15 @@ public class Client {
         if (rs.next()) {
             // mapeig de client BD a client OO
             cargarDadesDeSentenciaEnClient(rs);
+            // this.nom = rs.getString("nom");
+            // this.DNI = rs.getString("DNI");
+            // this.cognoms = rs.getString("cognoms");
+            // this.telefon = rs.getString("telefon");
+            // this.data_naix = rs.getDate("data_naix").toLocalDate();
+            // this.correu = rs.getString("correu");
+            // this.condicioFisica = rs.getString("condicio fisica");
+
+            return this;
         }
 
         return null;
@@ -106,7 +111,7 @@ public class Client {
 
             do {
                 dataCorrecta = true;
-                System.out.println("Introdueix data naixement de forma correcta (DD.MM.AAA)");
+                System.out.println("Introdueix data naixement de forma correcta (DD.MM.AAA) ");
                 try {
                     this.data_naix = LocalDate.parse(teclat.next(), formatter);
                 } catch (Exception ex) {
@@ -123,15 +128,15 @@ public class Client {
             Email correu = new Email();
             do {
                 System.out.println("Introdueix el correu electronic: ");
-            } while (!correu.setEmail(teclat.next()));
-            setEmail(correu);
+            } while (!correu.setcorreu(teclat.next()));
+            setcorreu(correu);
 
             CompteBancari compteBancari = new CompteBancari();
             do {
-                System.out.println("Introdueix el compte bancari (IBAN complert) ");
-            } while (!compteBancari.setIBAN(teclat.next()));
+                System.out.println("Introdueix el compte bancari (IBAN complert)");
+            } while (!compteBancari.setcompteBancari(teclat.next()));
 
-            setIBAN(compteBancari);
+            setcompteBancari(compteBancari);
 
             altaClientBD();
 
@@ -139,15 +144,6 @@ public class Client {
 
         }
 
-    }
-
-    private void setTelefon(Telefon telefon2) {
-    }
-
-    private void setIBAN(CompteBancari compteBancari2) {
-    }
-
-    private void setEmail(Email correu2) {
     }
 
     private void altaClientBD() throws SQLException {
@@ -220,7 +216,7 @@ public class Client {
         return clients;
     }
 
-    public ArrayList<Client> getClientOrdenatsReserves() throws SQLException {
+    public ArrayList<Client> getClientOrdenatsReserves(ResultSet rs) throws SQLException {
         ArrayList<Client> clients = new ArrayList<>();
 
         Connection conn = ConnexioBD.getConnection();
